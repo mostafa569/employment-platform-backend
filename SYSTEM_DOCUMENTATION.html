@@ -1,0 +1,860 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Employment Platform System Documentation</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        margin: 40px;
+        color: #222;
+        line-height: 1.6;
+      }
+      h1,
+      h2,
+      h3,
+      h4 {
+        color: #2c3e50;
+      }
+      h1 {
+        border-bottom: 2px solid #2c3e50;
+        padding-bottom: 10px;
+      }
+      h2 {
+        border-bottom: 1px solid #3498db;
+        padding-bottom: 5px;
+        margin-top: 30px;
+      }
+      table {
+        border-collapse: collapse;
+        width: 100%;
+        margin-bottom: 24px;
+      }
+      th,
+      td {
+        border: 1px solid #bbb;
+        padding: 8px 12px;
+        text-align: left;
+      }
+      th {
+        background: #f4f4f4;
+      }
+      code,
+      pre {
+        background: #f8f8f8;
+        padding: 2px 6px;
+        border-radius: 3px;
+      }
+      .index {
+        margin-bottom: 32px;
+      }
+      .index ul {
+        columns: 2;
+        -webkit-columns: 2;
+        -moz-columns: 2;
+      }
+      .section {
+        margin-bottom: 40px;
+      }
+      .tip {
+        background: #eafaf1;
+        border-left: 4px solid #27ae60;
+        padding: 10px 16px;
+        margin: 16px 0;
+      }
+      .warning {
+        background: #fff3cd;
+        border-left: 4px solid #ffc107;
+        padding: 10px 16px;
+        margin: 16px 0;
+      }
+      .erd {
+        background: #f8f9fa;
+        padding: 20px;
+        border-radius: 5px;
+        margin: 20px 0;
+      }
+      .use-case {
+        background: #f1f8ff;
+        padding: 15px;
+        margin: 10px 0;
+        border-radius: 5px;
+      }
+      .requirement {
+        margin: 10px 0;
+        padding: 10px;
+        background: #f9f9f9;
+        border-left: 3px solid #007bff;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Employment Platform System Documentation</h1>
+
+    <div class="section index">
+      <h2>Table of Contents</h2>
+      <ul>
+        <li><a href="#overview">1. System Overview</a></li>
+        <li>
+          <a href="#analysis">2. System Analysis</a>
+          <ul>
+            <li>
+              <a href="#functional-requirements">2.1 Functional Requirements</a>
+            </li>
+            <li>
+              <a href="#non-functional-requirements"
+                >2.2 Non-Functional Requirements</a
+              >
+            </li>
+          </ul>
+        </li>
+        <li><a href="#use-cases">3. Use Cases</a></li>
+        <li><a href="#logical-design">4. Logical Design (ERD)</a></li>
+        <li><a href="#setup">5. Setup & Installation</a></li>
+        <li><a href="#auth">6. Authentication Flow</a></li>
+        <li>
+          <a href="#api-endpoints">7. API Endpoints</a>
+          <ul>
+            <li><a href="#employee-endpoints">7.1 Employee Endpoints</a></li>
+            <li><a href="#employer-endpoints">7.2 Employer Endpoints</a></li>
+            <li><a href="#job-endpoints">7.3 Job Endpoints (Public)</a></li>
+            <li>
+              <a href="#application-endpoints">7.4 Application Endpoints</a>
+            </li>
+          </ul>
+        </li>
+        <li><a href="#models">8. Data Models</a></li>
+        <li><a href="#errors">9. Error Handling</a></li>
+        <li><a href="#file-upload">10. File Upload/Download</a></li>
+        <li><a href="#flows">11. Example Usage Flows</a></li>
+      </ul>
+    </div>
+
+    <div class="section" id="overview">
+      <h2>1. System Overview</h2>
+      <p>
+        A Node.js/Express backend for an employment platform connecting software
+        developers (employees) with companies (employers). The system
+        facilitates job posting, searching, application management, and profile
+        management for both employees and employers.
+      </p>
+
+      <h3>Key Features</h3>
+      <ul>
+        <li>
+          <strong>User Management:</strong> Registration and authentication for
+          employees and employers
+        </li>
+        <li>
+          <strong>Job Management:</strong> Post, search, and manage job listings
+        </li>
+        <li>
+          <strong>Application System:</strong> Apply for jobs and manage
+          applications
+        </li>
+        <li>
+          <strong>Profile Management:</strong> Create and update user profiles
+        </li>
+        <li>
+          <strong>File Handling:</strong> CV upload and download functionality
+        </li>
+        <li>
+          <strong>Search & Filter:</strong> Advanced search capabilities for
+          jobs and employees
+        </li>
+      </ul>
+    </div>
+
+    <div class="section" id="analysis">
+      <h2>2. System Analysis</h2>
+
+      <div id="functional-requirements">
+        <h3>2.1 Functional Requirements</h3>
+
+        <div class="requirement">
+          <h4>FR1: User Registration and Authentication</h4>
+          <ul>
+            <li>
+              The system shall allow employees to register with personal
+              information, programming skills, and experience level
+            </li>
+            <li>
+              The system shall allow employers to register with company
+              information
+            </li>
+            <li>The system shall provide secure login for both user types</li>
+            <li>
+              The system shall generate and validate JWT tokens for
+              authenticated sessions
+            </li>
+          </ul>
+        </div>
+
+        <div class="requirement">
+          <h4>FR2: Profile Management</h4>
+          <ul>
+            <li>
+              Employees shall be able to create and update their profiles with
+              skills, experience, and biography
+            </li>
+            <li>
+              Employers shall be able to create and update company profiles
+            </li>
+            <li>The system shall track profile views and provide statistics</li>
+          </ul>
+        </div>
+
+        <div class="requirement">
+          <h4>FR3: Job Management</h4>
+          <ul>
+            <li>
+              Employers shall be able to post new job listings with detailed
+              requirements
+            </li>
+            <li>
+              Employers shall be able to edit and update existing job postings
+            </li>
+            <li>Employers shall be able to activate/deactivate job postings</li>
+            <li>The system shall display active jobs to employees</li>
+          </ul>
+        </div>
+
+        <div class="requirement">
+          <h4>FR4: Job Search and Discovery</h4>
+          <ul>
+            <li>
+              Employees shall be able to search jobs by programming languages,
+              location, experience level
+            </li>
+            <li>
+              The system shall provide job recommendations based on employee
+              skills
+            </li>
+            <li>Employees shall be able to view detailed job information</li>
+            <li>The system shall support pagination for search results</li>
+          </ul>
+        </div>
+
+        <div class="requirement">
+          <h4>FR5: Application Management</h4>
+          <ul>
+            <li>
+              Employees shall be able to apply for jobs with cover letters and
+              CV uploads
+            </li>
+            <li>Employers shall be able to view and manage job applications</li>
+            <li>
+              Employers shall be able to update application status (pending,
+              accepted, rejected)
+            </li>
+            <li>Employees shall be able to withdraw their applications</li>
+          </ul>
+        </div>
+
+        <div class="requirement">
+          <h4>FR6: Employee Search</h4>
+          <ul>
+            <li>
+              Employers shall be able to search for employees by skills,
+              location, and experience
+            </li>
+            <li>
+              Employers shall be able to view employee profiles and statistics
+            </li>
+          </ul>
+        </div>
+
+        <div class="requirement">
+          <h4>FR7: File Management</h4>
+          <ul>
+            <li>The system shall support CV file uploads (PDF, DOC, DOCX)</li>
+            <li>Employers shall be able to download applicant CVs</li>
+            <li>Employees shall be able to download their own CVs</li>
+          </ul>
+        </div>
+      </div>
+
+      <div id="non-functional-requirements">
+        <h3>2.2 Non-Functional Requirements</h3>
+
+        <div class="requirement">
+          <h4>NFR1: Performance</h4>
+          <ul>
+            <li>The system shall respond to API requests within 2 seconds</li>
+            <li>The system shall support at least 100 concurrent users</li>
+            <li>Search operations shall return results within 3 seconds</li>
+          </ul>
+        </div>
+
+        <div class="requirement">
+          <h4>NFR2: Security</h4>
+          <ul>
+            <li>All passwords shall be hashed using bcrypt</li>
+            <li>JWT tokens shall expire after 24 hours</li>
+            <li>File uploads shall be validated for type and size</li>
+            <li>Users shall only access their own data</li>
+          </ul>
+        </div>
+
+        <div class="requirement">
+          <h4>NFR3: Scalability</h4>
+          <ul>
+            <li>The system shall be designed to handle database growth</li>
+            <li>File storage shall be organized and scalable</li>
+            <li>The API shall support pagination for large datasets</li>
+          </ul>
+        </div>
+
+        <div class="requirement">
+          <h4>NFR4: Reliability</h4>
+          <ul>
+            <li>The system shall have 99% uptime</li>
+            <li>Data shall be backed up regularly</li>
+            <li>The system shall handle errors gracefully</li>
+          </ul>
+        </div>
+
+        <div class="requirement">
+          <h4>NFR5: Usability</h4>
+          <ul>
+            <li>API responses shall be consistent and well-structured</li>
+            <li>Error messages shall be clear and informative</li>
+            <li>The system shall support standard HTTP status codes</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="section" id="use-cases">
+      <h2>3. Use Cases</h2>
+
+      <div class="use-case">
+        <h3>UC1: Employee Registration</h3>
+        <p><strong>Actor:</strong> Employee</p>
+        <p>
+          <strong>Precondition:</strong> Employee has valid personal information
+        </p>
+        <p><strong>Main Flow:</strong></p>
+        <ol>
+          <li>Employee accesses registration endpoint</li>
+          <li>
+            Employee provides personal information, skills, and experience
+          </li>
+          <li>System validates input data</li>
+          <li>System creates employee account</li>
+          <li>System returns success response with user data</li>
+        </ol>
+        <p>
+          <strong>Postcondition:</strong> Employee account is created and can
+          login
+        </p>
+      </div>
+
+      <div class="use-case">
+        <h3>UC2: Job Application</h3>
+        <p><strong>Actor:</strong> Employee</p>
+        <p>
+          <strong>Precondition:</strong> Employee is logged in and job exists
+        </p>
+        <p><strong>Main Flow:</strong></p>
+        <ol>
+          <li>Employee searches for jobs</li>
+          <li>Employee selects a job to apply for</li>
+          <li>Employee uploads CV and writes cover letter</li>
+          <li>System validates application data</li>
+          <li>System creates application record</li>
+          <li>System notifies employer of new application</li>
+        </ol>
+        <p>
+          <strong>Postcondition:</strong> Application is created and visible to
+          employer
+        </p>
+      </div>
+
+      <div class="use-case">
+        <h3>UC3: Job Posting</h3>
+        <p><strong>Actor:</strong> Employer</p>
+        <p><strong>Precondition:</strong> Employer is logged in</p>
+        <p><strong>Main Flow:</strong></p>
+        <ol>
+          <li>Employer accesses job posting form</li>
+          <li>Employer provides job details and requirements</li>
+          <li>System validates job data</li>
+          <li>System creates job listing</li>
+          <li>System makes job visible to employees</li>
+        </ol>
+        <p>
+          <strong>Postcondition:</strong> Job is posted and searchable by
+          employees
+        </p>
+      </div>
+
+      <div class="use-case">
+        <h3>UC4: Application Review</h3>
+        <p><strong>Actor:</strong> Employer</p>
+        <p>
+          <strong>Precondition:</strong> Employer is logged in and has
+          applications
+        </p>
+        <p><strong>Main Flow:</strong></p>
+        <ol>
+          <li>Employer views list of applications</li>
+          <li>Employer selects application to review</li>
+          <li>Employer downloads applicant CV</li>
+          <li>Employer reviews application details</li>
+          <li>Employer updates application status</li>
+          <li>System notifies employee of status change</li>
+        </ol>
+        <p>
+          <strong>Postcondition:</strong> Application status is updated and
+          employee is notified
+        </p>
+      </div>
+
+      <div class="use-case">
+        <h3>UC5: Employee Search</h3>
+        <p><strong>Actor:</strong> Employer</p>
+        <p><strong>Precondition:</strong> Employer is logged in</p>
+        <p><strong>Main Flow:</strong></p>
+        <ol>
+          <li>Employer accesses employee search</li>
+          <li>
+            Employer specifies search criteria (skills, location, experience)
+          </li>
+          <li>System searches employee database</li>
+          <li>System returns matching employees</li>
+          <li>Employer views employee profiles</li>
+        </ol>
+        <p>
+          <strong>Postcondition:</strong> Employer can view matching employee
+          profiles
+        </p>
+      </div>
+    </div>
+
+    <div class="section" id="logical-design">
+      <h2>4. Logical Design (ERD)</h2>
+
+      <div class="erd">
+        <h3>Entity Relationship Diagram</h3>
+
+        <h4>Entities and Their Attributes:</h4>
+
+        <h5>Employee Entity</h5>
+        <ul>
+          <li><strong>Primary Key:</strong> _id (ObjectId)</li>
+          <li><strong>Attributes:</strong></li>
+          <ul>
+            <li>nationalId (String, Unique)</li>
+            <li>name (String)</li>
+            <li>city (String)</li>
+            <li>email (String, Unique)</li>
+            <li>password (String, Hashed)</li>
+            <li>biography (String)</li>
+            <li>programmingLanguages (Array of Strings)</li>
+            <li>experienceLevel (Enum: Junior, Mid, Senior)</li>
+            <li>profileViews (Number)</li>
+            <li>createdAt (Date)</li>
+            <li>updatedAt (Date)</li>
+          </ul>
+        </ul>
+
+        <h5>Employer Entity</h5>
+        <ul>
+          <li><strong>Primary Key:</strong> _id (ObjectId)</li>
+          <li><strong>Attributes:</strong></li>
+          <ul>
+            <li>companyName (String)</li>
+            <li>email (String, Unique)</li>
+            <li>password (String, Hashed)</li>
+            <li>city (String)</li>
+            <li>industry (String)</li>
+            <li>description (String)</li>
+            <li>website (String)</li>
+            <li>createdAt (Date)</li>
+            <li>updatedAt (Date)</li>
+          </ul>
+        </ul>
+
+        <h5>Job Entity</h5>
+        <ul>
+          <li><strong>Primary Key:</strong> _id (ObjectId)</li>
+          <li>
+            <strong>Foreign Key:</strong> employer (ObjectId, References
+            Employer)
+          </li>
+          <li><strong>Attributes:</strong></li>
+          <ul>
+            <li>title (String)</li>
+            <li>description (String)</li>
+            <li>requiredProgrammingLanguages (Array of Strings)</li>
+            <li>experienceLevel (Enum: Junior, Mid, Senior)</li>
+            <li>location (String)</li>
+            <li>isActive (Boolean)</li>
+            <li>createdAt (Date)</li>
+            <li>updatedAt (Date)</li>
+          </ul>
+        </ul>
+
+        <h5>Application Entity</h5>
+        <ul>
+          <li><strong>Primary Key:</strong> _id (ObjectId)</li>
+          <li><strong>Foreign Keys:</strong></li>
+          <ul>
+            <li>employee (ObjectId, References Employee)</li>
+            <li>employer (ObjectId, References Employer)</li>
+            <li>job (ObjectId, References Job)</li>
+          </ul>
+          <li><strong>Attributes:</strong></li>
+          <ul>
+            <li>coverLetter (String)</li>
+            <li>cv (String, File Path)</li>
+            <li>status (Enum: pending, accepted, rejected, withdrawn)</li>
+            <li>isWithdrawn (Boolean)</li>
+            <li>withdrawnAt (Date)</li>
+            <li>createdAt (Date)</li>
+            <li>updatedAt (Date)</li>
+          </ul>
+        </ul>
+
+        <h4>Relationships:</h4>
+        <ul>
+          <li>
+            <strong>Employer → Job:</strong> One-to-Many (One employer can post
+            many jobs)
+          </li>
+          <li>
+            <strong>Employee → Application:</strong> One-to-Many (One employee
+            can have many applications)
+          </li>
+          <li>
+            <strong>Employer → Application:</strong> One-to-Many (One employer
+            can receive many applications)
+          </li>
+          <li>
+            <strong>Job → Application:</strong> One-to-Many (One job can receive
+            many applications)
+          </li>
+        </ul>
+
+        <h4>Indexes:</h4>
+        <ul>
+          <li>
+            Employee: programmingLanguages, city, experienceLevel (for search)
+          </li>
+          <li>Employee: biography (text index for search)</li>
+          <li>
+            Job: requiredProgrammingLanguages, location, experienceLevel (for
+            search)
+          </li>
+          <li>Job: title, description (text index for search)</li>
+        </ul>
+      </div>
+     
+    </div>
+    <img style="width: 80%;" src="ERD.png" alt="">
+    <div class="section" id="setup">
+      <h2>5. Setup & Installation</h2>
+      <ul>
+        <li><b>Requirements:</b> Node.js v14+, MongoDB</li>
+        <li>Clone the repository</li>
+        <li>Run <code>npm install</code></li>
+        <li>
+          Copy <code>env.example</code> to <code>.env</code> and fill in your
+          config
+        </li>
+        <li>Start MongoDB</li>
+        <li>
+          Run <code>npm run dev</code> (development) or
+          <code>npm start</code> (production)
+        </li>
+        <li>Server runs on <code>http://localhost:5000</code></li>
+      </ul>
+    </div>
+
+    <div class="section" id="auth">
+      <h2>6. Authentication Flow</h2>
+      <ul>
+        <li>
+          Register as Employee: <code>POST /api/auth/register/employee</code>
+        </li>
+        <li>
+          Register as Employer: <code>POST /api/auth/register/employer</code>
+        </li>
+        <li>Login as Employee: <code>POST /api/auth/login/employee</code></li>
+        <li>Login as Employer: <code>POST /api/auth/login/employer</code></li>
+        <li>
+          All protected endpoints require
+          <code>Authorization: Bearer &lt;token&gt;</code>
+        </li>
+      </ul>
+    </div>
+
+    <div class="section" id="api-endpoints">
+      <h2>7. API Endpoints</h2>
+
+      <div id="employee-endpoints">
+        <h3>7.1 Employee Endpoints</h3>
+        <table>
+          <tr>
+            <th>Method</th>
+            <th>Path</th>
+            <th>Description</th>
+          </tr>
+          <tr>
+            <td>GET</td>
+            <td>/api/employees/profile</td>
+            <td>Get employee profile</td>
+          </tr>
+          <tr>
+            <td>PUT</td>
+            <td>/api/employees/profile</td>
+            <td>Update profile</td>
+          </tr>
+          <tr>
+            <td>GET</td>
+            <td>/api/employees/profile/stats</td>
+            <td>Profile statistics</td>
+          </tr>
+          <tr>
+            <td>GET</td>
+            <td>/api/employees/jobs/search</td>
+            <td>Search jobs (query params)</td>
+          </tr>
+          <tr>
+            <td>GET</td>
+            <td>/api/employees/jobs/:jobId</td>
+            <td>Get job details</td>
+          </tr>
+          <tr>
+            <td>POST</td>
+            <td>/api/employees/jobs/:jobId/apply</td>
+            <td>Apply for job (multipart)</td>
+          </tr>
+          <tr>
+            <td>GET</td>
+            <td>/api/employees/jobs/recommended</td>
+            <td>Recommended jobs</td>
+          </tr>
+          <tr>
+            <td>GET</td>
+            <td>/api/employees/applications</td>
+            <td>List my applications</td>
+          </tr>
+          <tr>
+            <td>GET</td>
+            <td>/api/employees/applications/:applicationId/cv</td>
+            <td>Download my CV</td>
+          </tr>
+        </table>
+      </div>
+
+      <div id="employer-endpoints">
+        <h3>7.2 Employer Endpoints</h3>
+        <table>
+          <tr>
+            <th>Method</th>
+            <th>Path</th>
+            <th>Description</th>
+          </tr>
+          <tr>
+            <td>GET</td>
+            <td>/api/employers/profile</td>
+            <td>Get employer profile</td>
+          </tr>
+          <tr>
+            <td>PUT</td>
+            <td>/api/employers/profile</td>
+            <td>Update profile</td>
+          </tr>
+          <tr>
+            <td>GET</td>
+            <td>/api/employers/stats</td>
+            <td>Employer statistics</td>
+          </tr>
+          <tr>
+            <td>POST</td>
+            <td>/api/employers/jobs</td>
+            <td>Post a job</td>
+          </tr>
+          <tr>
+            <td>GET</td>
+            <td>/api/employers/jobs</td>
+            <td>List my jobs</td>
+          </tr>
+          <tr>
+            <td>PUT</td>
+            <td>/api/employers/jobs/:jobId</td>
+            <td>Update job</td>
+          </tr>
+          <tr>
+            <td>PATCH</td>
+            <td>/api/employers/jobs/:jobId/toggle</td>
+            <td>Toggle job status</td>
+          </tr>
+          <tr>
+            <td>GET</td>
+            <td>/api/employers/employees/search</td>
+            <td>Search employees</td>
+          </tr>
+          <tr>
+            <td>GET</td>
+            <td>/api/employers/employees/:employeeId</td>
+            <td>Get employee profile</td>
+          </tr>
+          <tr>
+            <td>GET</td>
+            <td>/api/employers/applications</td>
+            <td>List applications</td>
+          </tr>
+          <tr>
+            <td>PUT</td>
+            <td>/api/employers/applications/:applicationId/status</td>
+            <td>Update application status</td>
+          </tr>
+          <tr>
+            <td>GET</td>
+            <td>/api/employers/applications/:applicationId/cv</td>
+            <td>Download applicant CV</td>
+          </tr>
+        </table>
+      </div>
+
+      <div id="job-endpoints">
+        <h3>7.3 Job Endpoints (Public)</h3>
+        <table>
+          <tr>
+            <th>Method</th>
+            <th>Path</th>
+            <th>Description</th>
+          </tr>
+          <tr>
+            <td>GET</td>
+            <td>/api/jobs</td>
+            <td>List all jobs (with filters)</td>
+          </tr>
+          <tr>
+            <td>GET</td>
+            <td>/api/jobs/:jobId</td>
+            <td>Get job details</td>
+          </tr>
+        </table>
+      </div>
+
+      <div id="application-endpoints">
+        <h3>7.4 Application Endpoints</h3>
+        <table>
+          <tr>
+            <th>Method</th>
+            <th>Path</th>
+            <th>Description</th>
+          </tr>
+          <tr>
+            <td>GET</td>
+            <td>/api/applications/:applicationId</td>
+            <td>Get application details (auth required)</td>
+          </tr>
+          <tr>
+            <td>PATCH</td>
+            <td>/api/applications/:applicationId/withdraw</td>
+            <td>Withdraw application (employee only)</td>
+          </tr>
+        </table>
+      </div>
+    </div>
+
+    <div class="section" id="models">
+      <h2>8. Data Models</h2>
+      <h3>Employee</h3>
+      <ul>
+        <li>nationalId (unique)</li>
+        <li>name</li>
+        <li>city</li>
+        <li>email (unique)</li>
+        <li>password (hashed)</li>
+        <li>biography</li>
+        <li>programmingLanguages (array)</li>
+        <li>experienceLevel (Junior/Mid/Senior)</li>
+        <li>profileViews</li>
+      </ul>
+      <h3>Employer</h3>
+      <ul>
+        <li>companyName</li>
+        <li>email (unique)</li>
+        <li>password (hashed)</li>
+        <li>city</li>
+        <li>industry</li>
+        <li>description</li>
+        <li>website</li>
+      </ul>
+      <h3>Job</h3>
+      <ul>
+        <li>employer (ref)</li>
+        <li>title</li>
+        <li>description</li>
+        <li>requiredProgrammingLanguages (array)</li>
+        <li>experienceLevel</li>
+        <li>location</li>
+        <li>isActive</li>
+      </ul>
+      <h3>Application</h3>
+      <ul>
+        <li>employee (ref)</li>
+        <li>employer (ref)</li>
+        <li>job (ref)</li>
+        <li>coverLetter</li>
+        <li>cv (file path)</li>
+        <li>status (pending/accepted/rejected/withdrawn)</li>
+        <li>isWithdrawn</li>
+      </ul>
+    </div>
+
+    <div class="section" id="errors">
+      <h2>9. Error Handling</h2>
+      <ul>
+        <li>400: Validation errors, missing fields</li>
+        <li>401: Unauthorized (missing/invalid token)</li>
+        <li>403: Forbidden (access denied)</li>
+        <li>404: Not found</li>
+        <li>500: Server error</li>
+      </ul>
+    </div>
+
+    <div class="section" id="file-upload">
+      <h2>10. File Upload/Download</h2>
+      <ul>
+        <li>
+          Apply for job:
+          <code>POST /api/employees/jobs/:jobId/apply</code> (multipart, field:
+          <code>cv</code>)
+        </li>
+        <li>
+          Download CV:
+          <code>/api/employees/applications/:applicationId/cv</code> or
+          <code>/api/employers/applications/:applicationId/cv</code>
+        </li>
+      </ul>
+    </div>
+
+    <div class="section" id="flows">
+      <h2>11. Example Usage Flows</h2>
+      <b>Employee:</b>
+      <ol>
+        <li>
+          Register → Login → Update profile → Search jobs → Apply → Track
+          applications
+        </li>
+      </ol>
+      <b>Employer:</b>
+      <ol>
+        <li>
+          Register → Login → Post job → Search employees → Review applications →
+          Update status
+        </li>
+      </ol>
+    </div>
+
+    
+  </body>
+</html>

@@ -1,0 +1,808 @@
+{
+  "info": {
+    "name": "Employment Platform API",
+    "description": "Complete API test collection for the employment platform system",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:5000/api",
+      "type": "string"
+    },
+    {
+      "key": "employeeToken",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "employerToken",
+      "value": "",
+      "type": "string"
+    }
+  ],
+  "item": [
+    {
+      "name": "Authentication",
+      "item": [
+        {
+          "name": "Register Employee",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"John Doe\",\n  \"email\": \"john.doe@example.com\",\n  \"password\": \"password123\",\n  \"city\": \"New York\",\n  \"experienceLevel\": \"mid-level\",\n  \"programmingLanguages\": [\"JavaScript\", \"React\", \"Node.js\"],\n  \"bio\": \"Experienced software developer with 3 years of experience\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/auth/register/employee",
+              "host": ["{{baseUrl}}"],
+              "path": ["auth", "register", "employee"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Register Employer",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Jane Smith\",\n  \"email\": \"jane.smith@company.com\",\n  \"password\": \"password123\",\n  \"companyName\": \"Tech Solutions Inc\",\n  \"city\": \"San Francisco\",\n  \"industry\": \"Technology\",\n  \"description\": \"Leading software development company\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/auth/register/employer",
+              "host": ["{{baseUrl}}"],
+              "path": ["auth", "register", "employer"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Login Employee",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "if (pm.response.code === 200) {",
+                  "    const response = pm.response.json();",
+                  "    pm.collectionVariables.set('employeeToken', response.token);",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"john.doe@example.com\",\n  \"password\": \"password123\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/auth/login/employee",
+              "host": ["{{baseUrl}}"],
+              "path": ["auth", "login", "employee"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Login Employer",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "if (pm.response.code === 200) {",
+                  "    const response = pm.response.json();",
+                  "    pm.collectionVariables.set('employerToken', response.token);",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"jane.smith@company.com\",\n  \"password\": \"password123\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/auth/login/employer",
+              "host": ["{{baseUrl}}"],
+              "path": ["auth", "login", "employer"]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Employee Endpoints",
+      "item": [
+        {
+          "name": "Get Employee Profile",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{employeeToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/employees/profile",
+              "host": ["{{baseUrl}}"],
+              "path": ["employees", "profile"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Update Employee Profile",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{employeeToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"John Doe Updated\",\n  \"city\": \"Los Angeles\",\n  \"experienceLevel\": \"senior\",\n  \"programmingLanguages\": [\"JavaScript\", \"React\", \"Node.js\", \"Python\"],\n  \"bio\": \"Updated bio with more experience\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/employees/profile",
+              "host": ["{{baseUrl}}"],
+              "path": ["employees", "profile"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get Employee Profile Stats",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{employeeToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/employees/profile/stats",
+              "host": ["{{baseUrl}}"],
+              "path": ["employees", "profile", "stats"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Search Jobs",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{employeeToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/employees/jobs/search?programmingLanguages=JavaScript,React&location=New York&experienceLevel=mid-level&jobType=full-time&isRemote=true&page=1&limit=10",
+              "host": ["{{baseUrl}}"],
+              "path": ["employees", "jobs", "search"],
+              "query": [
+                {
+                  "key": "programmingLanguages",
+                  "value": "JavaScript,React"
+                },
+                {
+                  "key": "location",
+                  "value": "New York"
+                },
+                {
+                  "key": "experienceLevel",
+                  "value": "mid-level"
+                },
+                {
+                  "key": "jobType",
+                  "value": "full-time"
+                },
+                {
+                  "key": "isRemote",
+                  "value": "true"
+                },
+                {
+                  "key": "page",
+                  "value": "1"
+                },
+                {
+                  "key": "limit",
+                  "value": "10"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get Job Details",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{employeeToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/employees/jobs/:jobId",
+              "host": ["{{baseUrl}}"],
+              "path": ["employees", "jobs", ":jobId"],
+              "variable": [
+                {
+                  "key": "jobId",
+                  "value": "job_id_here"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Apply for Job",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{employeeToken}}"
+              }
+            ],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "cv",
+                  "type": "file",
+                  "src": []
+                },
+                {
+                  "key": "coverLetter",
+                  "value": "I am very interested in this position and believe my skills match perfectly.",
+                  "type": "text"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{baseUrl}}/employees/jobs/:jobId/apply",
+              "host": ["{{baseUrl}}"],
+              "path": ["employees", "jobs", ":jobId", "apply"],
+              "variable": [
+                {
+                  "key": "jobId",
+                  "value": "job_id_here"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get Recommended Jobs",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{employeeToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/employees/jobs/recommended",
+              "host": ["{{baseUrl}}"],
+              "path": ["employees", "jobs", "recommended"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get My Applications",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{employeeToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/employees/applications",
+              "host": ["{{baseUrl}}"],
+              "path": ["employees", "applications"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Download CV",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{employeeToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/employees/applications/:applicationId/cv",
+              "host": ["{{baseUrl}}"],
+              "path": ["employees", "applications", ":applicationId", "cv"],
+              "variable": [
+                {
+                  "key": "applicationId",
+                  "value": "application_id_here"
+                }
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Employer Endpoints",
+      "item": [
+        {
+          "name": "Get Employer Profile",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{employerToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/employers/profile",
+              "host": ["{{baseUrl}}"],
+              "path": ["employers", "profile"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Update Employer Profile",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{employerToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Jane Smith Updated\",\n  \"companyName\": \"Tech Solutions Inc Updated\",\n  \"city\": \"Los Angeles\",\n  \"industry\": \"Technology\",\n  \"description\": \"Updated company description\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/employers/profile",
+              "host": ["{{baseUrl}}"],
+              "path": ["employers", "profile"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get Employer Stats",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{employerToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/employers/stats",
+              "host": ["{{baseUrl}}"],
+              "path": ["employers", "stats"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Post Job",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{employerToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Senior React Developer\",\n  \"description\": \"We are looking for an experienced React developer\",\n  \"location\": \"New York\",\n  \"salary\": 80000,\n  \"jobType\": \"full-time\",\n  \"experienceLevel\": \"senior\",\n  \"requiredProgrammingLanguages\": [\"JavaScript\", \"React\", \"Node.js\"],\n  \"isRemote\": true,\n  \"requirements\": \"5+ years of experience with React\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/employers/jobs",
+              "host": ["{{baseUrl}}"],
+              "path": ["employers", "jobs"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get My Jobs",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{employerToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/employers/jobs",
+              "host": ["{{baseUrl}}"],
+              "path": ["employers", "jobs"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Update Job",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{employerToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Senior React Developer Updated\",\n  \"description\": \"Updated job description\",\n  \"salary\": 90000,\n  \"requirements\": \"Updated requirements\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/employers/jobs/:jobId",
+              "host": ["{{baseUrl}}"],
+              "path": ["employers", "jobs", ":jobId"],
+              "variable": [
+                {
+                  "key": "jobId",
+                  "value": "job_id_here"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Toggle Job Status",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{employerToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/employers/jobs/:jobId/toggle",
+              "host": ["{{baseUrl}}"],
+              "path": ["employers", "jobs", ":jobId", "toggle"],
+              "variable": [
+                {
+                  "key": "jobId",
+                  "value": "job_id_here"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Search Employees",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{employerToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/employers/employees/search?programmingLanguages=JavaScript,React&location=New York&experienceLevel=mid-level&page=1&limit=10",
+              "host": ["{{baseUrl}}"],
+              "path": ["employers", "employees", "search"],
+              "query": [
+                {
+                  "key": "programmingLanguages",
+                  "value": "JavaScript,React"
+                },
+                {
+                  "key": "location",
+                  "value": "New York"
+                },
+                {
+                  "key": "experienceLevel",
+                  "value": "mid-level"
+                },
+                {
+                  "key": "page",
+                  "value": "1"
+                },
+                {
+                  "key": "limit",
+                  "value": "10"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get Employee Profile",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{employerToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/employers/employees/:employeeId",
+              "host": ["{{baseUrl}}"],
+              "path": ["employers", "employees", ":employeeId"],
+              "variable": [
+                {
+                  "key": "employeeId",
+                  "value": "employee_id_here"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get Applications",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{employerToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/employers/applications",
+              "host": ["{{baseUrl}}"],
+              "path": ["employers", "applications"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Update Application Status",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{employerToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"status\": \"accepted\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/employers/applications/:applicationId/status",
+              "host": ["{{baseUrl}}"],
+              "path": ["employers", "applications", ":applicationId", "status"],
+              "variable": [
+                {
+                  "key": "applicationId",
+                  "value": "application_id_here"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Download CV (Employer)",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{employerToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/employers/applications/:applicationId/cv",
+              "host": ["{{baseUrl}}"],
+              "path": ["employers", "applications", ":applicationId", "cv"],
+              "variable": [
+                {
+                  "key": "applicationId",
+                  "value": "application_id_here"
+                }
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Public Job Endpoints",
+      "item": [
+        {
+          "name": "Get All Jobs",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/jobs?programmingLanguages=JavaScript,React&location=New York&experienceLevel=mid-level&jobType=full-time&isRemote=true&page=1&limit=10",
+              "host": ["{{baseUrl}}"],
+              "path": ["jobs"],
+              "query": [
+                {
+                  "key": "programmingLanguages",
+                  "value": "JavaScript,React"
+                },
+                {
+                  "key": "location",
+                  "value": "New York"
+                },
+                {
+                  "key": "experienceLevel",
+                  "value": "mid-level"
+                },
+                {
+                  "key": "jobType",
+                  "value": "full-time"
+                },
+                {
+                  "key": "isRemote",
+                  "value": "true"
+                },
+                {
+                  "key": "page",
+                  "value": "1"
+                },
+                {
+                  "key": "limit",
+                  "value": "10"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get Job Details (Public)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/jobs/:jobId",
+              "host": ["{{baseUrl}}"],
+              "path": ["jobs", ":jobId"],
+              "variable": [
+                {
+                  "key": "jobId",
+                  "value": "job_id_here"
+                }
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Application Management",
+      "item": [
+        {
+          "name": "Get Application Details",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{employeeToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/applications/:applicationId",
+              "host": ["{{baseUrl}}"],
+              "path": ["applications", ":applicationId"],
+              "variable": [
+                {
+                  "key": "applicationId",
+                  "value": "application_id_here"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Withdraw Application",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{employeeToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/applications/:applicationId/withdraw",
+              "host": ["{{baseUrl}}"],
+              "path": ["applications", ":applicationId", "withdraw"],
+              "variable": [
+                {
+                  "key": "applicationId",
+                  "value": "application_id_here"
+                }
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    }
+  ]
+}
