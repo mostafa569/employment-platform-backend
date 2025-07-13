@@ -367,4 +367,3 @@ Authorization: Bearer <token>
 - **Remote Work**: Filter by remote work availability
 
 
-This project is licensed under the MIT License.
