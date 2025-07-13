@@ -366,38 +366,5 @@ Authorization: Bearer <token>
 - **Job Type**: Filter by employment type
 - **Remote Work**: Filter by remote work availability
 
-## Development
-
-### Running in Development Mode
-
-```bash
-npm run dev
-```
-
-### Running Tests
-
-```bash
-npm test
-```
-
-### Environment Variables
-
-- `PORT`: Server port (default: 5000)
-- `MONGODB_URI`: MongoDB connection string
-- `JWT_SECRET`: Secret key for JWT tokens
-- `EMAIL_HOST`: SMTP host for email notifications
-- `EMAIL_PORT`: SMTP port
-- `EMAIL_USER`: Email username
-- `EMAIL_PASS`: Email password
-
-## Contributing
-
-1. Fork the repository
-2. Create a feature branch
-3. Make your changes
-4. Add tests if applicable
-5. Submit a pull request
-
-## License
 
 This project is licensed under the MIT License.
